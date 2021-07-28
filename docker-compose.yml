@@ -19,7 +19,7 @@ services:
     image: mdillon/postgis:9.5
 
   rabbitmq:
-    image: rabbitmq:management
+    image: rabbitmq:3.8-management
 
   redis:
     image: redis:3-alpine
