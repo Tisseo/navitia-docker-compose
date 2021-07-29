@@ -130,7 +130,7 @@ pip install -r core_team_ci_tools/github_artifacts/requirements.txt --user
 
 # let's download the navitia packages
 rm -f $archive
-python core_team_ci_tools/github_artifacts/github_artifacts.py -o CanalTP -r navitia -t $token -w $workflow -b $branch -a $archive -e $event --output-dir .
+python core_team_ci_tools/github_artifacts/github_artifacts.py -o CanalTP -r navitia -t $token -w $workflow -b $branch -a $archive -e $event --output-dir . --waiting
 
 # let's unzip what we received
 rm -f ./$inside_archive
