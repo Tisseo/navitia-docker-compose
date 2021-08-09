@@ -8,7 +8,9 @@ RUN dpkg -i ./mock-kraken_*.deb
 RUN apt-get install -f -y
 
 RUN mkdir -p /srv/kraken
-COPY /usr/bin/*_test /srv/kraken/
+RUN cp /usr/bin/main_routing_test /srv/kraken/
+RUN cp /usr/bin/departure_board_test /srv/kraken/
+
 EXPOSE 30000
 ENV KRAKEN_GENERAL_zmq_socket=tcp://*:30000
 ENV KRAKEN_GENERAL_log_level=INFO
