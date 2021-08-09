@@ -164,7 +164,7 @@ popd
 
 run docker build -f Dockerfile-master -t navitia/master .
 
-components='jormungandr kraken tyr-beat tyr-worker tyr-web instances-configurator'
+components='jormungandr kraken tyr-beat tyr-worker tyr-web instances-configurator mock-kraken'
 for component in $components; do
     echo "*********  Building $component ***************"
     run docker build -t navitia/$component:$version -f  Dockerfile-${component} .
