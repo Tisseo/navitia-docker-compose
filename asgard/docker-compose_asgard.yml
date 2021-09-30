@@ -2,13 +2,14 @@ version: '2'
 
 services:
   asgard-data:
-    image: navitia/asgard-data:${ASGARD_DATA_TAG}
+    image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-data:${ASGARD_DATA_TAG}
   
   asgard:
-    image: navitia/asgard-app:${ASGARD_APP_TAG}
+    image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-app:${ASGARD_APP_TAG}
     volumes_from:
       - asgard-data
     ports:
       - "6000:6000"
       - "8080:8080"
     restart: always
+
