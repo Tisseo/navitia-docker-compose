@@ -4,6 +4,14 @@ services:
   asgard-data:
     image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-data:${ASGARD_DATA_TAG}
   
+  asgard-valhalla-service:
+    image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-valhalla-service:${ASGARD_APP_TAG}
+    volumes_from:
+      - asgard-data
+    ports:
+      - 8002:8002
+    entrypoint: ["/usr/local/bin/valhalla_service", "/data/valhalla/valhalla.json", "1"]
+      
   asgard:
     image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-app:${ASGARD_APP_TAG}
     volumes_from:
@@ -12,4 +20,14 @@ services:
       - "6000:6000"
       - "8080:8080"
     restart: always
+    entrypoint: ["/usr/bin/asgard"]
+    environment:
+      - ASGARD_SOCKET_PATH=tcp://*:6000
+      - ASGARD_WALKING_CACHE_SIZE=50000
+      - ASGARD_BIKE_CACHE_SIZE=50000
+      - ASGARD_CAR_CACHE_SIZE=50000
+      - ASGARD_NB_THREADS=3
+      - ASGARD_METRICS_BINDING=0.0.0.0:8080
+      - ASGARD_VALHALLA_SERVICE_URL=asgard-valhalla-service:8002
+      - ASGARD_VALHALLA_CONF=/data/valhalla/valhalla.json
 
