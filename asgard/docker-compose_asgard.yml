@@ -16,7 +16,7 @@ services:
         condition: none
             
   asgard-valhalla-service:
-    image: navitia/asgard-valhalla-service:${ASGARD_APP_TAG}
+    image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-valhalla-service:${ASGARD_APP_TAG}
     depends_on:
       - "asgard-data"
     volumes:
@@ -30,7 +30,7 @@ services:
     # entrypoint: ["sh", "-c", "valhalla_service /data/valhalla/valhalla.json 1"]
       
   asgard:
-    image: navitia/asgard-app:${ASGARD_APP_TAG}
+    image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-app:${ASGARD_APP_TAG}
     depends_on:
       - "asgard-data"
       - "asgard-valhalla-service"
