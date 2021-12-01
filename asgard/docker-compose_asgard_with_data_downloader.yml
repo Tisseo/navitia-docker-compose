@@ -61,7 +61,7 @@ services:
       - ASGARD_BIKE_CACHE_SIZE=50000
       - ASGARD_CAR_CACHE_SIZE=50000
       - ASGARD_NB_THREADS=3
-      - ASGARD_METRICS_BINDING=0.0.0.0:8181
+      - ASGARD_METRICS_BINDING=0.0.0.0:8080
       - ASGARD_VALHALLA_SERVICE_URL=asgard-valhalla-service:8002
       - ASGARD_VALHALLA_CONF=/data/valhalla/valhalla.json
     deploy:
