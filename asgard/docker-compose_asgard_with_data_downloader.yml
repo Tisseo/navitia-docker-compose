@@ -1,13 +1,20 @@
-version: "3.8"
-
+version: "3.9"
 
 volumes:
   data:
     driver: local
-    
+
 services:
   asgard-data:
-    image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-data:${ASGARD_DATA_TAG}
+    image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-data-downloader:${MINIO_VERSION}
+    environment:
+        - MINIO_KEY=${MINIO_KEY}
+        - MINIO_SECRET=${MINIO_SECRET}
+        - MINIO_HOST=${MINIO_HOST}
+        - MINIO_BUCKET=${MINIO_BUCKET}
+        - MINIO_COVERAGE=${MINIO_COVERAGE}
+        - MINIO_VALHALLA_VERSION=${MINIO_VALHALLA_VERSION}
+        
     volumes:
       - data:/data/valhalla
     deploy:
@@ -24,11 +31,14 @@ services:
    
     ports:
       - 8002:8002
-    # for Asgard >= v1.16.0
-    entrypoint: ["sh", "-c", "wait-for-data.sh && valhalla_service /data/valhalla/valhalla.json 1"]
-    # for < v1.16.0
-    # entrypoint: ["sh", "-c", "valhalla_service /data/valhalla/valhalla.json 1"]
       
+    deploy:
+      mode: global
+      restart_policy:
+        condition: any
+
+    entrypoint: ["sh", "-c", "wait-for-data.sh && valhalla_service /data/valhalla/valhalla.json 1"]
+
   asgard:
     image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-app:${ASGARD_APP_TAG}
     depends_on:
@@ -42,10 +52,9 @@ services:
       - "6000:6000"
       - "8080:8080"
     restart: always
-    # for Asgard >= v1.16.0
+
     entrypoint: ["sh", "-c", "wait-for-data.sh && /usr/bin/asgard"]
-    # for < v1.16.0
-    # entrypoint: ["sh", "-c", "/usr/bin/asgard"]
+
     environment:
       - ASGARD_SOCKET_PATH=tcp://*:6000
       - ASGARD_WALKING_CACHE_SIZE=50000
