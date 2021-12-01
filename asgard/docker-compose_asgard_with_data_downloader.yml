@@ -6,14 +6,14 @@ volumes:
 
 services:
   asgard-data:
-    image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-data-downloader:latest
+    image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-data-downloader:${MINIO_VERSION}
     environment:
-        - MINIO_KEY=asgard_usr
-        - MINIO_SECRET=secret
-        - MINIO_HOST=localhost:9000
-        - MINIO_BUCKET=asgard
-        - MINIO_COVERAGE=europe 
-        - MINIO_VALHALLA_VERSION=3.1.4
+        - MINIO_KEY=${MINIO_KEY}
+        - MINIO_SECRET=${MINIO_SECRET}
+        - MINIO_HOST=${MINIO_HOST}
+        - MINIO_BUCKET=${MINIO_BUCKET}
+        - MINIO_COVERAGE=${MINIO_COVERAGE}
+        - MINIO_VALHALLA_VERSION=${MINIO_VALHALLA_VERSION}
         
     volumes:
       - data:/data/valhalla
