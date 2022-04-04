@@ -3,7 +3,7 @@ FROM navitia/master
 COPY navitia-common_*.deb navitia-jormungandr_*.deb ./
 
 RUN apt-get update \
-    && apt install -y python python-pip git libgeos-c1v5 libpq5 ./navitia-common_*.deb ./navitia-jormungandr_*.deb \
+    && apt install -y curl python python-pip git libgeos-c1v5 libpq5 ./navitia-common_*.deb ./navitia-jormungandr_*.deb \
     && apt-get clean \
     && rm -rf navitia-common_*.deb navitia-jormungandr_*.deb
 
