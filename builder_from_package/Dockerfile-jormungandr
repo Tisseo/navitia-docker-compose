@@ -1,21 +1,15 @@
 FROM navitia/master
 
-COPY navitia-common_*.deb ./
-COPY navitia-jormungandr_*.deb ./
+COPY navitia-common_*.deb navitia-jormungandr_*.deb ./
 
-# install navitia-common package
-RUN dpkg -i ./navitia-common_*.deb || exit 0
-RUN apt-get install -f -y
-
-# install navitia-jormun package
-RUN dpkg -i ./navitia-jormungandr_*.deb || exit 0
-RUN apt-get install -f -y
+RUN apt-get update \
+    && apt install -y python python-pip git libgeos-c1v5 libpq5 ./navitia-common_*.deb ./navitia-jormungandr_*.deb \
+    && apt-get clean \
+    && rm -rf navitia-common_*.deb navitia-jormungandr_*.deb
 
 # install jormungandr requirements
-RUN pip install --no-cache-dir -r /usr/share/jormungandr/requirements.txt
-
-# install uwsgi
-RUN pip install uwsgi
+RUN pip install --no-cache-dir -r /usr/share/jormungandr/requirements.txt \
+    && pip install uwsgi
 
 WORKDIR /usr/src/app/
 
@@ -23,4 +17,5 @@ HEALTHCHECK CMD curl -f http://localhost/v1/coverage || exit 1
 
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=cpp
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION_VERSION=2
+
 CMD ["uwsgi", "--master", "--lazy-apps", "--mount", "/=jormungandr:app", "--http", "0.0.0.0:80"]
