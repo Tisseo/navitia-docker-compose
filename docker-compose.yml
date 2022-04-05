@@ -20,6 +20,9 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
+    ports:
+        - "9672:5672"
+        - "9673:15672"
 
   redis:
     image: redis:3-alpine
@@ -30,6 +33,14 @@ services:
       - KRAKEN_GENERAL_instance_name=default
       - KRAKEN_GENERAL_database=/srv/ed/output/default.nav.lz4
       - KRAKEN_BROKER_host=rabbitmq
+      - KRAKEN_GENERAL_is_realtime_enabled=true
+      - KRAKEN_GENERAL_is_realtime_add_enabled=true
+      - KRAKEN_GENERAL_is_realtime_add_trip_enabled=true
+      - KRAKEN_BROKER_port=5672
+      - KRAKEN_BROKER_username=guest
+      - KRAKEN_BROKER_password=guest
+      - KRAKEN_BROKER_exchange=navitia
+      - KRAKEN_BROKER_rt_topics=realtime.default.test
     volumes_from:
       - tyr_beat:ro
     expose:

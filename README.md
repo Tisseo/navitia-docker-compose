@@ -3,7 +3,8 @@
 docker-compose with micro containers, one for each navitia's service
 
 This repository is not actively maintained, and not ready for production use.
-It's currently for testing only, as far as Kisio Digital (ex hove-io) is concerned.
+It's currently for testing only, as far as Hove (ex. Kisio Digital, ex.
+CanalTP) is concerned.
 
 ## How to use
 You'll need docker and docker-compose (tested with docker v1.12.1 and docker-compose v1.8.1)
