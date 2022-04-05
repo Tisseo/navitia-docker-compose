@@ -77,7 +77,7 @@ if [[ $event == "push" ]]; then
         show_help
         exit 1
     fi
-    fork="CanalTP"
+    fork="hove-io"
 elif [[ $event == "pull_request" ]]; then
     if [[ -z $branch ]]; then
         echo "branch must be set for pull_request events (-e pull_request -b branch_name)"
@@ -120,7 +120,7 @@ git clone https://x-token-auth:${token}@github.com/${fork}/navitia.git --branch 
 # let's dowload the package built on gihub actions
 # for that we need the submodule core_team_ci_tools
 rm -rf ./core_team_ci_tools/
-git clone https://x-token-auth:${token}@github.com/CanalTP/core_team_ci_tools.git  ./core_team_ci_tools/
+git clone https://x-token-auth:${token}@github.com/hove-io/core_team_ci_tools.git  ./core_team_ci_tools/
 
 # we setup the right python environnement to use core_team_ci_tools
 #pip install virtualenv -U
@@ -130,7 +130,7 @@ pip install -r core_team_ci_tools/github_artifacts/requirements.txt --user
 
 # let's download the navitia packages
 rm -f $archive
-python core_team_ci_tools/github_artifacts/github_artifacts.py -o CanalTP -r navitia -t $token -w $workflow -b $branch -a $archive -e $event --output-dir . --waiting
+python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r navitia -t $token -w $workflow -b $branch -a $archive -e $event --output-dir . --waiting
 
 # let's unzip what we received
 rm -f ./$inside_archive
@@ -141,13 +141,13 @@ rm -f navitia*.deb
 unzip -qo ${inside_archive} -d .
 
 # let's download mimirsbrunn package
-python core_team_ci_tools/github_artifacts/github_artifacts.py -o CanalTP -r mimirsbrunn -t $token -w release.yml -a "debian-package-release.zip" --output-dir .
+python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r mimirsbrunn -t $token -w release.yml -a "debian-package-release.zip" --output-dir .
 unzip -qo debian-package-release.zip
 # we select mimirsbrunn_jessie-*.deb
 rm -f mimirsbrunn_buster*.deb mimirsbrunn_stretch*.deb debian-package-release.zip
 
 # Download cosmogony2cities
-python core_team_ci_tools/github_artifacts/github_artifacts.py -o CanalTP -r cosmogony2cities -t  $token -w build_package.yml -a "package-debian8.zip" --output-dir .
+python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r cosmogony2cities -t  $token -w build_package.yml -a "package-debian8.zip" --output-dir .
 # cosmogony2cities_*.deb
 unzip -qo package-debian8.zip
 rm -f package-debian8.zip

@@ -3,7 +3,7 @@
 docker-compose with micro containers, one for each navitia's service
 
 This repository is not actively maintained, and not ready for production use.
-It's currently for testing only, as far as Kisio Digital (ex CanalTP) is concerned.
+It's currently for testing only, as far as Kisio Digital (ex hove-io) is concerned.
 
 ## How to use
 You'll need docker and docker-compose (tested with docker v1.12.1 and docker-compose v1.8.1)
@@ -19,7 +19,7 @@ The most common provided data formats are:
 * NTFS for Public Transport data (most tested in Navitia)  
   You can as well provide GTFS directly to Navitia, but it will be deprecated.
   This will be replaced by using first gtfs2ntfs converter available in
-  [navitia_model]((https://github.com/CanalTP/navitia_model)), then providing the
+  [navitia_model]((https://github.com/hove-io/navitia_model)), then providing the
   NTFS output to navitia.
 
 

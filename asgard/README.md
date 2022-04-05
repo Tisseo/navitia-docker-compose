@@ -1,6 +1,6 @@
 # ASGARD
 
-[Asgard](https://github.com/CanalTP/asgard) is now available in the Navitia docker-compose.
+[Asgard](https://github.com/hove-io/asgard) is now available in the Navitia docker-compose.
 
 For documentation about the dockers, please refer to this repository.
 
