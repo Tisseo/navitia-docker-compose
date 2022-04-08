@@ -1,12 +1,12 @@
 # KIRIN
 
-[The magical unicorn](https://github.com/CanalTP/kirin) is now available in the Navitia docker-compose.
+[The magical unicorn](https://github.com/hove-io/kirin) is now available in the Navitia docker-compose.
 
 ### How to use
 
 Prerequisites:
 Kirin docker image is needed to run the docker-compose-kirin and pulled from dockerhub by default.
-If you want to use/build a specific version, see the section [Docker](https://github.com/CanalTP/kirin#docker) in Kirin.
+If you want to use/build a specific version, see the section [Docker](https://github.com/hove-io/kirin#docker) in Kirin.
 
 When running the Navitia *docker-compose*, add the *docker-compose_kirin* file in the command:
 	`docker-compose -f docker-compose.yml -f kirin/docker-compose_kirin.yml up`
