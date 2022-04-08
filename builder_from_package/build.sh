@@ -149,8 +149,8 @@ rm -f mimirsbrunn_buster*.deb mimirsbrunn_stretch*.deb debian-package-release.zi
 # Download cosmogony2cities
 python core_team_ci_tools/github_artifacts/github_artifacts.py -o CanalTP -r cosmogony2cities -t  $token -w build_package.yml -a "package-debian8.zip" --output-dir .
 # cosmogony2cities_*.deb
-unzip -qo archive.zip
-rm -f archive.zip
+unzip -qo package-debian8.zip
+rm -f package-debian8.zip
 
 #deactivate
 
