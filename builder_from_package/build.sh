@@ -65,12 +65,12 @@ fi
 if [[ $event == "push" ]]; then
     if [[ $branch == "dev" ]]; then
         workflow="build_navitia_packages_for_dev_multi_distribution.yml"
-        archive="navitia-debian8-packages.zip"
-        inside_archive="navitia_debian8_packages.zip"
+        archive="navitia-debian10-packages.zip"
+        inside_archive="navitia_debian10_packages.zip"
     elif [[ $branch == "release" ]]; then
         workflow="build_navitia_packages_for_release.yml"
-        archive="navitia-debian8-packages.zip"
-        inside_archive="navitia_debian8_packages.zip"
+        archive="navitia-debian10-packages.zip"
+        inside_archive="navitia_debian10_packages.zip"
     else
         echo """branch must be "dev" or "release" for push events (-e push)"""
         echo "***${branch}***"
@@ -90,8 +90,8 @@ elif [[ $event == "pull_request" ]]; then
         exit 1
     fi
     workflow="build_navitia_packages_for_dev_multi_distribution.yml"
-    archive="navitia-debian8-packages.zip"
-    inside_archive="navitia_debian8_packages.zip"
+    archive="navitia-debian10-packages.zip"
+    inside_archive="navitia_debian10_packages.zip"
 else
     echo """event must be "push" or "pull_request" """
     echo "***${event}***"
@@ -144,13 +144,13 @@ unzip -qo ${inside_archive} -d .
 python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r mimirsbrunn -t $token -w release.yml -a "debian-package-release.zip" --output-dir .
 unzip -qo debian-package-release.zip
 # we select mimirsbrunn_jessie-*.deb
-rm -f mimirsbrunn_buster*.deb mimirsbrunn_stretch*.deb debian-package-release.zip
+rm -f debian-package-release.zip
 
 # Download cosmogony2cities
-python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r cosmogony2cities -t  $token -w build_package.yml -a "package-debian8.zip" --output-dir .
+python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r cosmogony2cities -t  $token -w build_package.yml -a "package-debian10.zip" --output-dir .
 # cosmogony2cities_*.deb
-unzip -qo package-debian8.zip
-rm -f package-debian8.zip
+unzip -qo package-debian10.zip
+rm -f package-debian10.zip
 
 #deactivate
 
