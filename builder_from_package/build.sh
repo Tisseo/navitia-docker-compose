@@ -147,10 +147,10 @@ unzip -qo debian-package-release.zip
 rm -f debian-package-release.zip
 
 # Download cosmogony2cities
-python core_team_ci_tools/github_artifacts/github_artifacts.py -o CanalTP -r cosmogony2cities -t  $token -w build_package.yml -a "archive.zip" --output-dir .
+python core_team_ci_tools/github_artifacts/github_artifacts.py -o CanalTP -r cosmogony2cities -t  $token -w build_package.yml -a "package-debian10.zip" --output-dir .
 # cosmogony2cities_*.deb
-unzip -qo archive.zip
-rm -f archive.zip
+unzip -qo package-debian10.zip
+rm -f package-debian10.zip
 
 #deactivate
 
