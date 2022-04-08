@@ -71,7 +71,7 @@ if [[ $event == "push" ]]; then
         workflow="build_navitia_packages_for_release.yml"
         archive="navitia-debian8-packages.zip"
         inside_archive="navitia_debian8_packages.zip"
-    else 
+    else
         echo """branch must be "dev" or "release" for push events (-e push)"""
         echo "***${branch}***"
         show_help
@@ -101,16 +101,16 @@ fi
 
 if [[ $push -eq 1 ]]; then
     if [ -z $user ];
-    then 
+    then
         echo """Cannot push to docker registry without a "-u user." """
         show_help
         exit 1
     fi
-    if [ -z $password ]; then 
+    if [ -z $password ]; then
     echo """Cannot push to docker registry without a "-p password." """
         show_help
         exit 1
-    fi  
+    fi
 fi
 
 # clone navitia source code
@@ -147,14 +147,14 @@ unzip -qo debian-package-release.zip
 rm -f mimirsbrunn_buster*.deb mimirsbrunn_stretch*.deb debian-package-release.zip
 
 # Download cosmogony2cities
-python core_team_ci_tools/github_artifacts/github_artifacts.py -o CanalTP -r cosmogony2cities -t  $token -w build_package.yml -a "archive.zip" --output-dir .
-# cosmogony2cities_*.deb 
+python core_team_ci_tools/github_artifacts/github_artifacts.py -o CanalTP -r cosmogony2cities -t  $token -w build_package.yml -a "package-debian8.zip" --output-dir .
+# cosmogony2cities_*.deb
 unzip -qo archive.zip
 rm -f archive.zip
 
 #deactivate
 
-# let's retreive the navitia version 
+# let's retreive the navitia version
 pushd navitia
 version=$(git describe)
 echo "building version $version"
@@ -168,7 +168,7 @@ components='jormungandr kraken tyr-beat tyr-worker tyr-web instances-configurato
 for component in $components; do
     echo "*********  Building $component ***************"
     run docker build -t navitia/$component:$version -f  Dockerfile-${component} .
-    
+
     # tag image if a -t tag was given
     if [ -n "${tag}" ]; then
         run docker tag navitia/$component:$version navitia/$component:$tag
