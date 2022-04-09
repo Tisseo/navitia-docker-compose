@@ -7,9 +7,10 @@ COPY instances_configuration.sh /
 COPY templates/* /templates/
 
 RUN apt-get update \
-    && apt install -y python python-pip git libpq-dev postgresql-client \
+    && apt install -y python python-pip git libpq-dev postgresql-client gettext-base \
     && apt-get clean
 
 RUN pip install -r /tmp/requirements.txt
+RUN chmod +x /instances_configuration.sh
 
-CMD sh -x /instances_configuration.sh
+ENTRYPOINT ["/bin/bash","/instances_configuration.sh"]
