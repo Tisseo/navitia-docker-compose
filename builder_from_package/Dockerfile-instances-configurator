@@ -3,7 +3,6 @@ FROM navitia/master
 COPY navitia/source/sql/alembic /usr/share/navitia/ed/alembic
 COPY navitia/source/sql/requirements.txt /tmp/requirements.txt
 COPY navitia/source/cities /usr/share/navitia/cities
-COPY instances_configuration.sh /
 COPY templates/* /templates/
 
 RUN apt-get update \
@@ -11,6 +10,8 @@ RUN apt-get update \
     && apt-get clean
 
 RUN pip install -r /tmp/requirements.txt
+
+COPY instances_configuration.sh /
 RUN chmod +x /instances_configuration.sh
 
 ENTRYPOINT ["/bin/bash","/instances_configuration.sh"]
