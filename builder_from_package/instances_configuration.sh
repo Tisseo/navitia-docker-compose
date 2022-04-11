@@ -39,6 +39,11 @@ add_instance() {
   db_config $instance_name
 }
 
+echo_instance() {
+  instance_name=$1
+  echo "found instance $instance_name"
+}
+
 
 upgrade_cities_db() {
   # Prepare the upgrade file for the cities db in the docker-compose
@@ -61,9 +66,15 @@ upgrade_cities_db() {
 # to add an instance add an environment variable called INSTANCE_${NAME_OF_THE_INSTANCE}
 instances=$(env | grep "INSTANCE_"  | sed 's/INSTANCE_\(.*\)=.*/\1/')
 
+
 for i in $instances; do
   add_instance $i
 done
+
+for i in $instances; do
+  echo_instance $i
+done
+
 
 echo "all instances configured"
 
