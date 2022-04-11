@@ -14,7 +14,7 @@ Usage: ${0##*/} -e event -b branch -o oauth_token (-f pull_request_fork) [-t tag
     -r      push images to a registry
     -u      username for authentication on dockerhub
     -p      password for authentication on dockerhub
-    -n      build from Navitia CI, default False
+    -n      build from Navitia CI, in this case, no packages need to be downloaded from github actions, default False
 EOF
 }
 
