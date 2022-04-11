@@ -137,7 +137,7 @@ if [[ $navitia_ci -ne 1 ]]; then
     rm -f $archive
     python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r navitia -t $token -w $workflow -b $branch -a $archive -e $event --output-dir . --waiting
 #else
-# In CI we assume that navitia_packages is already download
+# In CI we assume that navitia_packages is already downloaded
 fi
 
 # let's unzip what we received
