@@ -14,7 +14,7 @@ Usage: ${0##*/} -e event -b branch -o oauth_token (-f pull_request_fork) [-t tag
     -r      push images to a registry
     -u      username for authentication on dockerhub
     -p      password for authentication on dockerhub
-
+    -n      build from Navitia CI, in this case, no packages need to be downloaded from github actions, default False
 EOF
 }
 
@@ -30,7 +30,7 @@ function run() {
 }
 
 
-while getopts "o:t:b:rp:u:e:f:h" opt; do
+while getopts "o:t:b:rp:u:e:f:nh" opt; do
     case $opt in
         o) token=$OPTARG
             ;;
@@ -47,6 +47,8 @@ while getopts "o:t:b:rp:u:e:f:h" opt; do
         e) event=$OPTARG
             ;;
         f) fork=$OPTARG
+            ;;
+        n) navitia_ci=1
             ;;
         h|\?)
             show_help
@@ -129,8 +131,14 @@ git clone https://x-token-auth:${token}@github.com/hove-io/core_team_ci_tools.gi
 pip install -r core_team_ci_tools/github_artifacts/requirements.txt --user
 
 # let's download the navitia packages
-rm -f $archive
-python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r navitia -t $token -w $workflow -b $branch -a $archive -e $event --output-dir . --waiting
+# clone navitia source code
+if [[ $navitia_ci -ne 1 ]]; then
+    # let's dowload the package built on gihub actions
+    rm -f $archive
+    python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r navitia -t $token -w $workflow -b $branch -a $archive -e $event --output-dir . --waiting
+#else
+# In CI we assume that navitia_packages is already downloaded
+fi
 
 # let's unzip what we received
 rm -f ./$inside_archive
