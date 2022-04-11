@@ -136,13 +136,13 @@ if [[ $navitia_ci -ne 1 ]]; then
     # let's dowload the package built on gihub actions
     rm -f $archive
     python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r navitia -t $token -w $workflow -b $branch -a $archive -e $event --output-dir . --waiting
+    # let's unzip what we received
+    rm -f ./$inside_archive
+    unzip -q ${archive}
 #else
 # In CI we assume that navitia_packages is already downloaded
 fi
 
-# let's unzip what we received
-rm -f ./$inside_archive
-unzip -q ${archive}
 
 # let's unzip (again) to obtain the packages
 rm -f navitia*.deb
