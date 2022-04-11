@@ -128,7 +128,7 @@ git clone https://x-token-auth:${token}@github.com/hove-io/core_team_ci_tools.gi
 #pip install virtualenv -U
 #virtualenv -py python3 ci_tools
 #. ci_tools/bin/activate
-pip install -r core_team_ci_tools/github_artifacts/requirements.txt
+pip install -r core_team_ci_tools/github_artifacts/requirements.txt --user
 
 # let's download the navitia packages
 # clone navitia source code
