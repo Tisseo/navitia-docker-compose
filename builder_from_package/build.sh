@@ -243,5 +243,8 @@ rm -f archive.zip
 # and what was inside the package
 rm -f mimirsbrunn*.deb
 
+rm -f mock-kraken*.deb
+rm -f cosmogony2cities*.deb
+
 # let's remove the navita/master docker image
 docker rmi -f navitia/master
