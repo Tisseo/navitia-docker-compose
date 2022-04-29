@@ -51,8 +51,12 @@ services:
     environment:
       - JORMUNGANDR_SQLALCHEMY_DATABASE_URI=postgresql://navitia:navitia@database/jormungandr
       - JORMUNGANDR_INSTANCE_DEFAULT={"key":"default","zmq_socket":"tcp://kraken-default:30000"}
+
+      - APACHE_SERVER_NAME=localhost
+      - APACHE_SERVER_ALIAS=127.0.0.1
     ports:
-      - "9191:80"
+      - "80:80"
+
 
   tyr_worker:
     image: navitia/tyr-worker:${TAG}
