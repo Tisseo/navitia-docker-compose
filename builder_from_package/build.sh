@@ -141,12 +141,12 @@ if [[ $push -eq 1 ]]; then
 fi
 
 # clone navitia source code
-#rm -rf ./navitia/
+rm -rf ./navitia/
 git clone https://x-token-auth:${token}@github.com/${fork}/navitia.git --branch $branch ./navitia/
 
 # let's dowload the package built on gihub actions
 # for that we need the submodule core_team_ci_tools
-#rm -rf ./core_team_ci_tools/
+rm -rf ./core_team_ci_tools/
 git clone https://x-token-auth:${token}@github.com/hove-io/core_team_ci_tools.git  ./core_team_ci_tools/
 
 # we setup the right python environnement to use core_team_ci_tools
@@ -160,7 +160,7 @@ git clone https://x-token-auth:${token}@github.com/hove-io/core_team_ci_tools.gi
 if [[ $navitia_ci -ne 1 ]]; then
     # let's dowload the package built on gihub actions
     rm -f $archive
-    python3 core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r navitia -t $token -w $workflow -b $branch -a $archive -e $event --output-dir . --waiting
+    python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r navitia -t $token -w $workflow -b $branch -a $archive -e $event --output-dir . --waiting
     # let's unzip what we received
     rm -f ./$inside_archive
     unzip -q ${archive}
@@ -174,13 +174,13 @@ rm -f navitia*.deb
 unzip -qo ${inside_archive} -d .
 
 # let's download mimirsbrunn package
-python3 core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r mimirsbrunn -t $token -w release.yml -a $mimirsbrunn_package --output-dir .
+python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r mimirsbrunn -t $token -w release.yml -a $mimirsbrunn_package --output-dir .
 unzip -qo $mimirsbrunn_package
 # we select mimirsbrunn_jessie-*.deb
 rm -f $mimirsbrunn_package
 
 # Download cosmogony2cities
-python3 core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r cosmogony2cities -t  $token -w build_package.yml -a $cosmogony2cities_package --output-dir .
+python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r cosmogony2cities -t  $token -w build_package.yml -a $cosmogony2cities_package --output-dir .
 # cosmogony2cities_*.deb
 unzip -qo $cosmogony2cities_package
 rm -f $cosmogony2cities_package
