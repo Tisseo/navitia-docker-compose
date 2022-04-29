@@ -81,6 +81,11 @@ else
     show_help
     exit 1
 fi
+echo "******************************************************************"
+echo "navitia package selected: ${navitia_package}"
+echo "inside navitia package selected: ${inside_navitia_package}"
+echo "cosmogony2cities package selected: ${cosmogony2cities_package}"
+echo "******************************************************************"
 
 mimirsbrunn_package="debian-package-release.zip"
 
@@ -136,26 +141,26 @@ if [[ $push -eq 1 ]]; then
 fi
 
 # clone navitia source code
-rm -rf ./navitia/
+#rm -rf ./navitia/
 git clone https://x-token-auth:${token}@github.com/${fork}/navitia.git --branch $branch ./navitia/
 
 # let's dowload the package built on gihub actions
 # for that we need the submodule core_team_ci_tools
-rm -rf ./core_team_ci_tools/
+#rm -rf ./core_team_ci_tools/
 git clone https://x-token-auth:${token}@github.com/hove-io/core_team_ci_tools.git  ./core_team_ci_tools/
 
 # we setup the right python environnement to use core_team_ci_tools
 #pip install virtualenv -U
 #virtualenv -py python3 ci_tools
 #. ci_tools/bin/activate
-pip install -r core_team_ci_tools/github_artifacts/requirements.txt --user
+#pip install -r core_team_ci_tools/github_artifacts/requirements.txt --user
 
 ## let's download the navitia packages
 ## clone navitia source code
 if [[ $navitia_ci -ne 1 ]]; then
     # let's dowload the package built on gihub actions
     rm -f $archive
-    python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r navitia -t $token -w $workflow -b $branch -a $archive -e $event --output-dir . --waiting
+    python3 core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r navitia -t $token -w $workflow -b $branch -a $archive -e $event --output-dir . --waiting
     # let's unzip what we received
     rm -f ./$inside_archive
     unzip -q ${archive}
@@ -169,13 +174,13 @@ rm -f navitia*.deb
 unzip -qo ${inside_archive} -d .
 
 # let's download mimirsbrunn package
-python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r mimirsbrunn -t $token -w release.yml -a $mimirsbrunn_package --output-dir .
+python3 core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r mimirsbrunn -t $token -w release.yml -a $mimirsbrunn_package --output-dir .
 unzip -qo $mimirsbrunn_package
 # we select mimirsbrunn_jessie-*.deb
 rm -f $mimirsbrunn_package
 
 # Download cosmogony2cities
-python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r cosmogony2cities -t  $token -w build_package.yml -a $cosmogony2cities_package --output-dir .
+python3 core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r cosmogony2cities -t  $token -w build_package.yml -a $cosmogony2cities_package --output-dir .
 # cosmogony2cities_*.deb
 unzip -qo $cosmogony2cities_package
 rm -f $cosmogony2cities_package
