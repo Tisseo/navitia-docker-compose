@@ -21,6 +21,10 @@ COPY apache/apache2.conf /etc/apache2/apache2.conf
 COPY apache/envvars /etc/apache2/envvars
 COPY apache/logformat.conf /etc/apache2/conf-available/logformat.conf
 
+# jormungandr wsgi
+COPY jormungandr.wsgi /usr/src/app/jormungandr.wsgi
+COPY run_jormungandr.sh /usr/src/app/run.sh
+
 # Enable site and modes
 RUN a2ensite 000-default.conf \
     && a2enmod rewrite \
@@ -29,23 +33,17 @@ RUN a2ensite 000-default.conf \
     && a2enmod proxy_http \
     && a2enconf logformat.conf
 
+# Redirect apache log output to docker log collector
+RUN ln -sf /proc/self/fd/1 /var/log/apache2/access.log \
+    && ln -sf /proc/self/fd/2 /var/log/apache2/error.log
+
 WORKDIR /usr/src/app/
-
-# jormungandr wsgi and entrypoint
-COPY jormungandr.wsgi ./jormungandr.wsgi
-COPY run_jormungandr.sh ./run.sh
-
-HEALTHCHECK CMD curl -f http://localhost/v1 || exit 1
 
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=cpp
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION_VERSION=2
 
-# Redirect apache log output to docker log collector
-RUN ln -sf /proc/1/fd/1 /var/log/apache2/access.log \
-    && ln -sf /proc/1/fd/2 /var/log/apache2/error.log
-
+HEALTHCHECK CMD curl -f http://localhost/v1 || exit 1
 
 EXPOSE 80
 
-ENTRYPOINT [ "./run.sh" ]
-
+ENTRYPOINT [ "/usr/src/app/run.sh" ]

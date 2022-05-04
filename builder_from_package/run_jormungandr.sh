@@ -4,7 +4,7 @@
 service apache2 start
 if [ $? == 1 ]
 then
-  echo "Error: config file not started";
+  echo "Error: failed to start apache2";
   exit 1
 fi
 # run UWSGI
