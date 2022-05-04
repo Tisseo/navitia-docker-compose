@@ -24,7 +24,7 @@ The script `build.sh` retreive the navitia source code along with the debian pac
 
 # Usage
 
-Note : for debian8 based images, you need an internet access, and an access to the internal canaltp apt repository http://apt.canaltp.local/debian/repositories (works when on VPN)
+Note: for debian8 based images, you need an internet access, and an access to the internal Hove apt repository http://apt.canaltp.local/debian/repositories (works when on VPN)
 
 Usage
 ```
