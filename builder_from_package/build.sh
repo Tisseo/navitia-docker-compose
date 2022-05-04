@@ -5,7 +5,7 @@ set -e
 
 function show_help() {
     cat << EOF
-Usage: ${0##*/} -e event -b branch -o oauth_token (-f pull_request_fork) [-t tag] [-r -u dockerhub_user -p dockerhub_password]
+Usage: ${0##*/} -e event -b branch -d debian_version -o oauth_token (-f pull_request_fork) [-t tag] [-r -u dockerhub_user -p dockerhub_password]
     -e      [push|pull_request]
     -b      [dev|release] if -e push, or the branch name if -e pull_request
     -f      pull_request fork owner, needed only if -e pull_request
@@ -15,6 +15,7 @@ Usage: ${0##*/} -e event -b branch -o oauth_token (-f pull_request_fork) [-t tag
     -u      username for authentication on dockerhub
     -p      password for authentication on dockerhub
     -n      build from Navitia CI, in this case, no packages need to be downloaded from github actions, default False
+    -d      [debian8|debian10]
 EOF
 }
 
@@ -30,7 +31,7 @@ function run() {
 }
 
 
-while getopts "o:t:b:rp:u:e:f:nh" opt; do
+while getopts "o:t:b:rp:u:e:f:d:nh" opt; do
     case $opt in
         o) token=$OPTARG
             ;;
@@ -50,6 +51,8 @@ while getopts "o:t:b:rp:u:e:f:nh" opt; do
             ;;
         n) navitia_ci=1
             ;;
+        d) debian=$OPTARG
+            ;;
         h|\?)
             show_help
             exit 1
@@ -57,22 +60,44 @@ while getopts "o:t:b:rp:u:e:f:nh" opt; do
     esac
 done
 
-if [[ -z $token ]] ||  [[ -z $branch ]];
+if [[ -z $token ]] ||  [[ -z $branch ]] || [[ -z $debian ]];
 then
      echo "Missing argument."
      show_help
      exit 1
 fi
 
+if [[ $debian == "debian8" ]]; then
+    navitia_package="navitia-debian8-packages.zip"
+    inside_navitia_package="navitia_debian8_packages.zip"
+    cosmogony2cities_package="package-debian8.zip"
+elif [[ $debian == "debian10" ]]; then
+    navitia_package="navitia-debian10-packages.zip"
+    inside_navitia_package="navitia_debian10_packages.zip"
+    cosmogony2cities_package="package-debian10.zip"
+else
+    echo """debian version must be "debian8" or "debian10" """
+    echo "***${debian}***"
+    show_help
+    exit 1
+fi
+echo "******************************************************************"
+echo "navitia package selected: ${navitia_package}"
+echo "inside navitia package selected: ${inside_navitia_package}"
+echo "cosmogony2cities package selected: ${cosmogony2cities_package}"
+echo "******************************************************************"
+
+mimirsbrunn_package="debian-package-release.zip"
+
 if [[ $event == "push" ]]; then
     if [[ $branch == "dev" ]]; then
         workflow="build_navitia_packages_for_dev_multi_distribution.yml"
-        archive="navitia-debian8-packages.zip"
-        inside_archive="navitia_debian8_packages.zip"
+        archive=$navitia_package
+        inside_archive=$inside_navitia_package
     elif [[ $branch == "release" ]]; then
         workflow="build_navitia_packages_for_release.yml"
-        archive="navitia-debian8-packages.zip"
-        inside_archive="navitia_debian8_packages.zip"
+        archive=$navitia_package
+        inside_archive=$inside_navitia_package
     else
         echo """branch must be "dev" or "release" for push events (-e push)"""
         echo "***${branch}***"
@@ -92,8 +117,8 @@ elif [[ $event == "pull_request" ]]; then
         exit 1
     fi
     workflow="build_navitia_packages_for_dev_multi_distribution.yml"
-    archive="navitia-debian8-packages.zip"
-    inside_archive="navitia_debian8_packages.zip"
+    archive=$navitia_package
+    inside_archive=$inside_navitia_package
 else
     echo """event must be "push" or "pull_request" """
     echo "***${event}***"
@@ -130,8 +155,8 @@ git clone https://x-token-auth:${token}@github.com/hove-io/core_team_ci_tools.gi
 #. ci_tools/bin/activate
 pip install -r core_team_ci_tools/github_artifacts/requirements.txt --user
 
-# let's download the navitia packages
-# clone navitia source code
+## let's download the navitia packages
+## clone navitia source code
 if [[ $navitia_ci -ne 1 ]]; then
     # let's dowload the package built on gihub actions
     rm -f $archive
@@ -149,16 +174,16 @@ rm -f navitia*.deb
 unzip -qo ${inside_archive} -d .
 
 # let's download mimirsbrunn package
-python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r mimirsbrunn -t $token -w release.yml -a "debian-package-release.zip" --output-dir .
-unzip -qo debian-package-release.zip
+python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r mimirsbrunn -t $token -w release.yml -a $mimirsbrunn_package --output-dir .
+unzip -qo $mimirsbrunn_package
 # we select mimirsbrunn_jessie-*.deb
-rm -f debian-package-release.zip
+rm -f $mimirsbrunn_package
 
 # Download cosmogony2cities
-python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r cosmogony2cities -t  $token -w build_package.yml -a "package-debian8.zip" --output-dir .
+python core_team_ci_tools/github_artifacts/github_artifacts.py -o hove-io -r cosmogony2cities -t  $token -w build_package.yml -a $cosmogony2cities_package --output-dir .
 # cosmogony2cities_*.deb
-unzip -qo package-debian8.zip
-rm -f package-debian8.zip
+unzip -qo $cosmogony2cities_package
+rm -f $cosmogony2cities_package
 
 #deactivate
 
@@ -170,12 +195,12 @@ popd
 
 
 
-run docker build -f Dockerfile-master -t navitia/master .
+run docker build -f $debian/Dockerfile-master -t navitia/master .
 
-components='jormungandr kraken tyr-beat tyr-worker tyr-web instances-configurator mock-kraken'
+components='jormungandr kraken tyr-beat tyr-worker tyr-web instances-configurator mock-kraken eitri'
 for component in $components; do
     echo "*********  Building $component ***************"
-    run docker build -t navitia/$component:$version -f  Dockerfile-${component} .
+    run docker build -t navitia/$component:$version -f  $debian/Dockerfile-${component} .
 
     # tag image if a -t tag was given
     if [ -n "${tag}" ]; then
@@ -217,6 +242,9 @@ rm -f navitia*.deb
 rm -f archive.zip
 # and what was inside the package
 rm -f mimirsbrunn*.deb
+
+rm -f mock-kraken*.deb
+rm -f cosmogony2cities*.deb
 
 # let's remove the navita/master docker image
 docker rmi -f navitia/master
