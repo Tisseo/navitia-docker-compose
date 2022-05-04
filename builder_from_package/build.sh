@@ -197,7 +197,7 @@ popd
 
 run docker build -f $debian/Dockerfile-master -t navitia/master .
 
-components='jormungandr kraken tyr-beat tyr-worker tyr-web instances-configurator mock-kraken'
+components='jormungandr kraken tyr-beat tyr-worker tyr-web instances-configurator mock-kraken eitri'
 for component in $components; do
     echo "*********  Building $component ***************"
     run docker build -t navitia/$component:$version -f  $debian/Dockerfile-${component} .
