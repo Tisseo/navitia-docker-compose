@@ -1,0 +1,22 @@
+name: Build Docker Compose Images
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+        matrix:
+            distribution: [debian8, debian10]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: build navitia_builder docker images
+      working-directory: builder_from_package
+      run: ./build.sh -o ${{secrets.GITHUB_TOKEN}} -d ${{matrix.distribution}} -e push -b dev -t dev
