@@ -19,4 +19,4 @@ jobs:
     - uses: actions/checkout@v3
     - name: build navitia_builder docker images
       working-directory: builder_from_package
-      run: ./build.sh -o ${{secrets.GITHUB_TOKEN}} -d ${{matrix.distribution}} -e push -b dev -t dev
+      run: ./build.sh -o ${{secrets.GH_TOKEN}} -d ${{matrix.distribution}} -e push -b dev -t dev
