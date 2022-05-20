@@ -1,18 +1,18 @@
-version: '2'
+version: '3'
 
 services:
 {% for instance in instances %}
   kraken-{{instance}}:
     image: navitia/kraken:${TAG}
     environment:
-        - KRAKEN_GENERAL_instance_name={{instance}}
-        - KRAKEN_GENERAL_database=/srv/ed/output/{{instance}}.nav.lz4
-        - KRAKEN_BROKER_host=rabbitmq
-        {% for parameter in kraken_env %}
-        - {{ parameter }}
-        {% endfor %}
-    volumes_from:
-      - tyr_beat:ro
+      - KRAKEN_GENERAL_instance_name={{instance}}
+      - KRAKEN_GENERAL_database=/srv/ed/output/{{instance}}.nav.lz4
+      - KRAKEN_BROKER_host=rabbitmq
+      {% for parameter in kraken_env %}
+      - {{ parameter }}
+      {% endfor %}
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 {% endfor %}

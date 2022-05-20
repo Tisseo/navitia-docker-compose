@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
 
@@ -8,8 +8,8 @@ services:
         - KRAKEN_GENERAL_instance_name=corr-02
         - KRAKEN_GENERAL_database=/srv/ed/output/corr-02.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -19,8 +19,8 @@ services:
         - KRAKEN_GENERAL_instance_name=airport-01
         - KRAKEN_GENERAL_database=/srv/ed/output/airport-01.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -30,8 +30,8 @@ services:
         - KRAKEN_GENERAL_instance_name=prolong-mano
         - KRAKEN_GENERAL_database=/srv/ed/output/prolong-mano.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -41,8 +41,8 @@ services:
         - KRAKEN_GENERAL_instance_name=bibus
         - KRAKEN_GENERAL_database=/srv/ed/output/bibus.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -52,8 +52,8 @@ services:
         - KRAKEN_GENERAL_instance_name=mission
         - KRAKEN_GENERAL_database=/srv/ed/output/mission.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -63,8 +63,8 @@ services:
         - KRAKEN_GENERAL_instance_name=test-02
         - KRAKEN_GENERAL_database=/srv/ed/output/test-02.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -74,8 +74,8 @@ services:
         - KRAKEN_GENERAL_instance_name=sherbrooke
         - KRAKEN_GENERAL_database=/srv/ed/output/sherbrooke.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -85,8 +85,8 @@ services:
         - KRAKEN_GENERAL_instance_name=idfm
         - KRAKEN_GENERAL_database=/srv/ed/output/idfm.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -96,8 +96,8 @@ services:
         - KRAKEN_GENERAL_instance_name=test-03
         - KRAKEN_GENERAL_database=/srv/ed/output/test-03.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -107,8 +107,8 @@ services:
         - KRAKEN_GENERAL_instance_name=nb-corr-05
         - KRAKEN_GENERAL_database=/srv/ed/output/nb-corr-05.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -118,8 +118,8 @@ services:
         - KRAKEN_GENERAL_instance_name=rebroussement
         - KRAKEN_GENERAL_database=/srv/ed/output/rebroussement.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -129,8 +129,8 @@ services:
         - KRAKEN_GENERAL_instance_name=map
         - KRAKEN_GENERAL_database=/srv/ed/output/map.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -140,8 +140,8 @@ services:
         - KRAKEN_GENERAL_instance_name=nb-corr-04
         - KRAKEN_GENERAL_database=/srv/ed/output/nb-corr-04.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -151,8 +151,8 @@ services:
         - KRAKEN_GENERAL_instance_name=freqgtfs
         - KRAKEN_GENERAL_database=/srv/ed/output/freqgtfs.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -162,8 +162,8 @@ services:
         - KRAKEN_GENERAL_instance_name=corr-01
         - KRAKEN_GENERAL_database=/srv/ed/output/corr-01.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -173,8 +173,8 @@ services:
         - KRAKEN_GENERAL_instance_name=passe-minuit-01
         - KRAKEN_GENERAL_database=/srv/ed/output/passe-minuit-01.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -192,8 +192,8 @@ services:
         - KRAKEN_BROKER_password=guest
         - KRAKEN_BROKER_exchange=navitia
         - KRAKEN_BROKER_rt_topics=realtime.cots
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -203,8 +203,8 @@ services:
         - KRAKEN_GENERAL_instance_name=freqparis
         - KRAKEN_GENERAL_database=/srv/ed/output/freqparis.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -214,8 +214,8 @@ services:
         - KRAKEN_GENERAL_instance_name=itl
         - KRAKEN_GENERAL_database=/srv/ed/output/itl.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -225,8 +225,8 @@ services:
         - KRAKEN_GENERAL_instance_name=poitiers
         - KRAKEN_GENERAL_database=/srv/ed/output/poitiers.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -236,8 +236,8 @@ services:
         - KRAKEN_GENERAL_instance_name=test-01
         - KRAKEN_GENERAL_database=/srv/ed/output/test-01.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -247,8 +247,8 @@ services:
         - KRAKEN_GENERAL_instance_name=boucle-01
         - KRAKEN_GENERAL_database=/srv/ed/output/boucle-01.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -258,8 +258,8 @@ services:
         - KRAKEN_GENERAL_instance_name=paysdelaloire
         - KRAKEN_GENERAL_database=/srv/ed/output/paysdelaloire.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -269,8 +269,8 @@ services:
         - KRAKEN_GENERAL_instance_name=saintomer
         - KRAKEN_GENERAL_database=/srv/ed/output/saintomer.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -280,8 +280,8 @@ services:
         - KRAKEN_GENERAL_instance_name=tcl
         - KRAKEN_GENERAL_database=/srv/ed/output/tcl.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -291,8 +291,8 @@ services:
         - KRAKEN_GENERAL_instance_name=passe-minuit-02
         - KRAKEN_GENERAL_database=/srv/ed/output/passe-minuit-02.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -302,8 +302,8 @@ services:
         - KRAKEN_GENERAL_instance_name=nb-corr-01
         - KRAKEN_GENERAL_database=/srv/ed/output/nb-corr-01.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -313,8 +313,8 @@ services:
         - KRAKEN_GENERAL_instance_name=mdi
         - KRAKEN_GENERAL_database=/srv/ed/output/mdi.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -324,8 +324,8 @@ services:
         - KRAKEN_GENERAL_instance_name=nb-corr-03
         - KRAKEN_GENERAL_database=/srv/ed/output/nb-corr-03.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -335,8 +335,8 @@ services:
         - KRAKEN_GENERAL_instance_name=prolong-auto
         - KRAKEN_GENERAL_database=/srv/ed/output/prolong-auto.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -346,8 +346,8 @@ services:
         - KRAKEN_GENERAL_instance_name=nb-corr-02
         - KRAKEN_GENERAL_database=/srv/ed/output/nb-corr-02.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -357,8 +357,8 @@ services:
         - KRAKEN_GENERAL_instance_name=freqsimple
         - KRAKEN_GENERAL_database=/srv/ed/output/freqsimple.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -368,8 +368,8 @@ services:
         - KRAKEN_GENERAL_instance_name=freqgtfs-01
         - KRAKEN_GENERAL_database=/srv/ed/output/freqgtfs-01.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -379,8 +379,8 @@ services:
         - KRAKEN_GENERAL_instance_name=tad
         - KRAKEN_GENERAL_database=/srv/ed/output/tad.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
@@ -390,8 +390,8 @@ services:
         - KRAKEN_GENERAL_instance_name=fr-auv
         - KRAKEN_GENERAL_database=/srv/ed/output/fr-auv.nav.lz4
         - KRAKEN_BROKER_host=rabbitmq
-    volumes_from:
-      - tyr_beat:ro
+    volumes:
+      - tyr_data:/srv/ed:ro
     expose:
       - "30000"
 
