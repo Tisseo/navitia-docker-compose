@@ -63,7 +63,7 @@ services:
       - APACHE_SERVER_NAME=localhost
       - APACHE_SERVER_ALIAS=127.0.0.1
     ports:
-      - "8095:80"
+      - "80:80"
     depends_on:
       - database
       - redis
