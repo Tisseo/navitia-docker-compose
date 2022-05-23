@@ -1,51 +1,25 @@
-version: "3.8"
+version: "3"
 
 
 volumes:
   data:
     driver: local
-    
+
 services:
-  asgard-data:
-    image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-data:${ASGARD_DATA_TAG}
-    volumes:
-      - data:/data/valhalla
-    deploy:
-      mode: global
-      restart_policy:
-        condition: none
-            
   asgard-valhalla-service:
-    image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-valhalla-service:${ASGARD_APP_TAG}
-    depends_on:
-      - "asgard-data"
+    image: navitia/asgard-valhalla-service:${VALHALLA_VERSION}
     volumes:
-      - data:/data/valhalla
-   
-    ports:
-      - 8002:8002
-    # for Asgard >= v1.16.0
+      - ../artemis_data/asgard:/data/valhalla:ro
     entrypoint: ["sh", "-c", "wait-for-data.sh && valhalla_service /data/valhalla/valhalla.json 1"]
-    # for < v1.16.0
-    # entrypoint: ["sh", "-c", "valhalla_service /data/valhalla/valhalla.json 1"]
-      
+
   asgard:
-    image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-app:${ASGARD_APP_TAG}
+    image: navitia/asgard-app:${ASGARD_APP_TAG}
     depends_on:
-      - "asgard-data"
       - "asgard-valhalla-service"
-        
-    volumes:
-      - data:/data/valhalla
-      
-    ports:
-      - "6000:6000"
-      - "8080:8080"
     restart: always
-    # for Asgard >= v1.16.0
+    volumes:
+      - ../artemis_data/asgard:/data/valhalla:ro
     entrypoint: ["sh", "-c", "wait-for-data.sh && /usr/bin/asgard"]
-    # for < v1.16.0
-    # entrypoint: ["sh", "-c", "/usr/bin/asgard"]
     environment:
       - ASGARD_SOCKET_PATH=tcp://*:6000
       - ASGARD_WALKING_CACHE_SIZE=50000
@@ -55,7 +29,5 @@ services:
       - ASGARD_METRICS_BINDING=0.0.0.0:8080
       - ASGARD_VALHALLA_SERVICE_URL=asgard-valhalla-service:8002
       - ASGARD_VALHALLA_CONF=/data/valhalla/valhalla.json
-    deploy:
-      mode: global
-      restart_policy:
-        condition: any
+    expose:
+      - "6000"
