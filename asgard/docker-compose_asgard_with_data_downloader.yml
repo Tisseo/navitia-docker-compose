@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3"
 
 volumes:
   data:
@@ -6,7 +6,7 @@ volumes:
 
 services:
   asgard-data:
-    image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-data-downloader:${MINIO_VERSION}
+    image: docker-registry.canaltp.fr/navitia/asgard-data-downloader:master
     environment:
         - MINIO_KEY=${MINIO_KEY}
         - MINIO_SECRET=${MINIO_SECRET}
@@ -14,44 +14,30 @@ services:
         - MINIO_BUCKET=${MINIO_BUCKET}
         - MINIO_COVERAGE=${MINIO_COVERAGE}
         - MINIO_VALHALLA_VERSION=${MINIO_VALHALLA_VERSION}
-        
     volumes:
       - data:/data/valhalla
-    deploy:
-      mode: global
-      restart_policy:
-        condition: none
-            
+
   asgard-valhalla-service:
-    image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-valhalla-service:${ASGARD_APP_TAG}
+    image: docker-registry.canaltp.fr/navitia/asgard-valhalla-service:${MINIO_VALHALLA_VERSION}
     depends_on:
       - "asgard-data"
     volumes:
       - data:/data/valhalla
-   
-    ports:
-      - 8002:8002
-      
-    deploy:
-      mode: global
-      restart_policy:
-        condition: any
-
+    expose:
+      - "8002"
     entrypoint: ["sh", "-c", "wait-for-data.sh && valhalla_service /data/valhalla/valhalla.json 1"]
 
   asgard:
-    image: ${ASGARD_DOCKER_REGISTER:-docker.io}/navitia/asgard-app:${ASGARD_APP_TAG}
+    image: docker-registry.canaltp.fr/navitia/asgard-app:${ASGARD_APP_TAG}
     depends_on:
       - "asgard-data"
       - "asgard-valhalla-service"
-        
+
     volumes:
       - data:/data/valhalla
-      
-    ports:
-      - "6000:6000"
-      - "8080:8080"
-    restart: always
+
+    expose:
+      - "6000"
 
     entrypoint: ["sh", "-c", "wait-for-data.sh && /usr/bin/asgard"]
 
@@ -64,7 +50,3 @@ services:
       - ASGARD_METRICS_BINDING=0.0.0.0:8080
       - ASGARD_VALHALLA_SERVICE_URL=asgard-valhalla-service:8002
       - ASGARD_VALHALLA_CONF=/data/valhalla/valhalla.json
-    deploy:
-      mode: global
-      restart_policy:
-        condition: any

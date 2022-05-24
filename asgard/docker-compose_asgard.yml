@@ -9,8 +9,10 @@ services:
   asgard-valhalla-service:
     image: navitia/asgard-valhalla-service:${VALHALLA_VERSION}
     volumes:
-      - ../artemis_data/asgard:/data/valhalla:ro
+      - data:/data/valhalla:ro
     entrypoint: ["sh", "-c", "wait-for-data.sh && valhalla_service /data/valhalla/valhalla.json 1"]
+    expose:
+      - "8002"
 
   asgard:
     image: navitia/asgard-app:${ASGARD_APP_TAG}
@@ -18,7 +20,7 @@ services:
       - "asgard-valhalla-service"
     restart: always
     volumes:
-      - ../artemis_data/asgard:/data/valhalla:ro
+      - data:/data/valhalla:ro
     entrypoint: ["sh", "-c", "wait-for-data.sh && /usr/bin/asgard"]
     environment:
       - ASGARD_SOCKET_PATH=tcp://*:6000
