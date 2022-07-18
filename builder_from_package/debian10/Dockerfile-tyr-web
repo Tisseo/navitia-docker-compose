@@ -4,7 +4,7 @@ COPY navitia-common_*.deb navitia-tyr_*.deb ./
 COPY tyr_settings.py /srv/navitia/settings.py
 
 RUN apt-get update \
-    && apt install -y python python-pip git libgeos-c1v5 ./navitia-common_*.deb ./navitia-tyr_*.deb \
+    && apt install -y curl python python-pip git libgeos-c1v5 ./navitia-common_*.deb ./navitia-tyr_*.deb \
     && apt-get clean \
     && rm -rf navitia-common_*.deb navitia-tyr_*.deb
 
