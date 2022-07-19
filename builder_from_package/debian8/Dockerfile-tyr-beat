@@ -16,14 +16,10 @@ RUN pip install --no-cache-dir -r /usr/share/tyr/requirements.txt
 
 # install postgresql-client
 RUN apt-get install -y postgresql-client
-        
-COPY tyr_settings.py /srv/navitia/settings.py
+
 
 COPY run_tyr_beat.sh /
 RUN chmod +x /run_tyr_beat.sh
-
-ENV TYR_CONFIG_FILE=/srv/navitia/settings.py
-
 
 WORKDIR /usr/share/tyr/
 CMD ["sh", "/run_tyr_beat.sh"]
