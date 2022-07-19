@@ -20,6 +20,7 @@ services:
 
   database:
     image: postgis/postgis:13-3.2
+    container_name: navitia_database
     environment:
       - POSTGRES_USER=navitia
       - POSTGRES_PASSWORD=navitia
@@ -29,9 +30,11 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
+    container_name: navitia_rabbitmq
 
   redis:
     image: redis:3-alpine
+    container_name: navitia_redis
 
   kraken-default:
     image: navitia/kraken:${TAG}
@@ -41,7 +44,7 @@ services:
       - KRAKEN_GENERAL_is_realtime_enabled=true
       - KRAKEN_GENERAL_is_realtime_add_enabled=true
       - KRAKEN_GENERAL_is_realtime_add_trip_enabled=true
-      - KRAKEN_BROKER_host=rabbitmq
+      - KRAKEN_BROKER_host=navitia_rabbitmq
       - KRAKEN_BROKER_port=5672
       - KRAKEN_BROKER_username=guest
       - KRAKEN_BROKER_password=guest
@@ -57,7 +60,7 @@ services:
   jormungandr:
     image: navitia/jormungandr:${TAG}
     environment:
-      - JORMUNGANDR_SQLALCHEMY_DATABASE_URI=postgresql://navitia:navitia@database/jormungandr
+      - JORMUNGANDR_SQLALCHEMY_DATABASE_URI=postgresql://navitia:navitia@navitia_database/jormungandr
       - JORMUNGANDR_INSTANCE_DEFAULT={"key":"default","zmq_socket":"tcp://kraken-default:30000"}
       - JORMUNGANDR_MEMORY_CACHE_CONFIGURATION={ "CACHE_TYPE":"uwsgi","CACHE_UWSGI_NAME":"jormungandr"}
       - APACHE_SERVER_NAME=localhost
@@ -75,16 +78,27 @@ services:
       - tyr_data:/srv/ed
       - tyr_instance_conf:/etc/tyr.d
     environment:
-      - TYR_CITIES_DATABASE_URI=postgresql://navitia:navitia@cities_database/cities
+      - TYR_CITIES_DATABASE_URI=postgresql://navitia:navitia@navitia_cities_database/cities
       - TYR_CITIES_OSM_FILE_PATH=/srv/ed/
-      - TYR_CELERY_BROKER_URL=amqp://guest:guest@localhost:5672//
-      - TYR_KRAKEN_BROKER_URL=amqp://guest:guest@localhost:5672//
+      - TYR_CELERY_BROKER_URL=amqp://guest:guest@navitia_rabbitmq:5672//
+      - TYR_KRAKEN_BROKER_URL=amqp://guest:guest@navitia_rabbitmq:5672//
+      - TYR_SQLALCHEMY_DATABASE_URI=postgresql://navitia:navitia@navitia_database/jormungandr
+      - TYR_REDIS_HOST=navitia_redis
+      - TYR_INSTANCES_DIR=/etc/tyr.d
     depends_on:
       - database
       - cities_database
 
   tyr_beat:
     image: navitia/tyr-beat:${TAG}
+    environment:
+      - TYR_CITIES_DATABASE_URI=postgresql://navitia:navitia@navitia_cities_database/cities
+      - TYR_CITIES_OSM_FILE_PATH=/srv/ed/
+      - TYR_CELERY_BROKER_URL=amqp://guest:guest@navitia_rabbitmq:5672//
+      - TYR_KRAKEN_BROKER_URL=amqp://guest:guest@navitia_rabbitmq:5672//
+      - TYR_SQLALCHEMY_DATABASE_URI=postgresql://navitia:navitia@navitia_database/jormungandr
+      - TYR_REDIS_HOST=navitia_redis
+      - TYR_INSTANCES_DIR=/etc/tyr.d
     volumes:
       - tyr_data:/srv/ed
       - tyr_instance_conf:/etc/tyr.d
@@ -100,16 +114,20 @@ services:
     ports:
       - "9898:80"
     environment:
-      - TYR_CITIES_DATABASE_URI=postgresql://navitia:navitia@cities_database/cities
+      - TYR_CITIES_DATABASE_URI=postgresql://navitia:navitia@navitia_cities_database/cities
       - TYR_CITIES_OSM_FILE_PATH=/srv/ed/
-      - TYR_CELERY_BROKER_URL=amqp://guest:guest@localhost:5672//
-      - TYR_KRAKEN_BROKER_URL=amqp://guest:guest@localhost:5672//
+      - TYR_CELERY_BROKER_URL=amqp://guest:guest@navitia_rabbitmq:5672//
+      - TYR_KRAKEN_BROKER_URL=amqp://guest:guest@navitia_rabbitmq:5672//
+      - TYR_SQLALCHEMY_DATABASE_URI=postgresql://navitia:navitia@navitia_database/jormungandr
+      - TYR_REDIS_HOST=navitia_redis
+      - TYR_INSTANCES_DIR=/etc/tyr.d
     depends_on:
       - database
       - cities_database
 
   cities_database:
     image: postgis/postgis:13-3.2
+    container_name: navitia_cities_database
     environment:
       - POSTGRES_USER=navitia
       - POSTGRES_PASSWORD=navitia

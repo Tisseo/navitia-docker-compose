@@ -1,7 +1,6 @@
 FROM navitia/master
 
 COPY navitia-common_*.deb navitia-tyr_*.deb ./
-COPY tyr_settings.py /srv/navitia/settings.py
 COPY run_tyr_beat.sh /
 
 
@@ -16,7 +15,5 @@ RUN pip install --no-cache-dir -r /usr/share/tyr/requirements.txt
 RUN chmod +x /run_tyr_beat.sh
 
 WORKDIR /usr/share/tyr/
-
-ENV TYR_CONFIG_FILE=/srv/navitia/settings.py
 
 CMD ["sh", "/run_tyr_beat.sh"]

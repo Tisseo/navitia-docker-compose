@@ -17,9 +17,6 @@ RUN pip install --no-cache-dir -r /usr/share/tyr/requirements.txt
 # install uwsgi
 RUN pip install uwsgi
 
-COPY tyr_settings.py /srv/navitia/settings.py
-ENV TYR_CONFIG_FILE=/srv/navitia/settings.py
-
 WORKDIR /usr/src/app/
 RUN cp /usr/bin/manage_tyr.py /usr/src/app/manage_tyr.py
 

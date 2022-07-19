@@ -6,7 +6,6 @@ while ! pg_isready --host=database; do
     sleep 1;
 done
 
-# export TYR_CONFIG_FILE=/srv/navitia/settings.py
 # export PYTHONPATH=.:../navitiacommon
 
 #db migration
