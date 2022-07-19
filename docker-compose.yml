@@ -60,7 +60,7 @@ services:
   jormungandr:
     image: navitia/jormungandr:${TAG}
     environment:
-      - JORMUNGANDR_SQLALCHEMY_DATABASE_URI=postgresql://navitia:navitia@database/jormungandr
+      - JORMUNGANDR_SQLALCHEMY_DATABASE_URI=postgresql://navitia:navitia@navitia_database/jormungandr
       - JORMUNGANDR_INSTANCE_DEFAULT={"key":"default","zmq_socket":"tcp://kraken-default:30000"}
       - JORMUNGANDR_MEMORY_CACHE_CONFIGURATION={ "CACHE_TYPE":"uwsgi","CACHE_UWSGI_NAME":"jormungandr"}
       - APACHE_SERVER_NAME=localhost
