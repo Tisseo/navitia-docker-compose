@@ -83,7 +83,7 @@ services:
       - TYR_CELERY_BROKER_URL=amqp://guest:guest@navitia_rabbitmq:5672//
       - TYR_KRAKEN_BROKER_URL=amqp://guest:guest@navitia_rabbitmq:5672//
       - TYR_SQLALCHEMY_DATABASE_URI=postgresql://navitia:navitia@navitia_database/jormungandr
-      - TYR_REDIS_HOST=redis
+      - TYR_REDIS_HOST=navitia_redis
       - TYR_INSTANCES_DIR=/etc/tyr.d
     depends_on:
       - database
