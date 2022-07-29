@@ -114,6 +114,7 @@ services:
     ports:
       - "9898:80"
     environment:
+      - TYR_DATABASE_HOST=navitia_database
       - TYR_CITIES_DATABASE_URI=postgresql://navitia:navitia@navitia_cities_database/cities
       - TYR_CITIES_OSM_FILE_PATH=/srv/ed/
       - TYR_CELERY_BROKER_URL=amqp://guest:guest@navitia_rabbitmq:5672//
