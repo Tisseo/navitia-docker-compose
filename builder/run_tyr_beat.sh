@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # we need to wait for the database to be ready
-while ! pg_isready --host=database; do
+while ! pg_isready "--host=${NAVITIA_DB_HOST}" -p "${NAVITIA_DB_PORT}"; do
     echo "waiting for postgres to be ready"
     sleep 1;
 done
@@ -10,6 +10,6 @@ done
 export PYTHONPATH=.:../navitiacommon
 
 #db migration
-python ./manage_tyr.py db upgrade
+python /usr/bin/manage_tyr.py db upgrade
 
 exec celery beat -A tyr.tasks

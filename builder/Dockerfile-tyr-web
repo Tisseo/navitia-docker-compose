@@ -24,7 +24,11 @@ RUN apt-get update --fix-missing \
         git
 
 COPY tyr_settings.py /srv/navitia/settings.py
+COPY entrypoint_tyr.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 ENV TYR_CONFIG_FILE=/srv/navitia/settings.py
 ENV PYTHONPATH=.:../navitiacommon
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["uwsgi",  "--mount", "/=tyr:app",  "--http", "0.0.0.0:80"]

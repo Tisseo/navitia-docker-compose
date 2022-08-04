@@ -25,9 +25,12 @@ RUN apt-get update --fix-missing && \
 RUN mkdir -p /srv/kraken
 WORKDIR /srv/kraken
 COPY kraken/kraken kraken
+COPY entrypoint_kraken.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 EXPOSE 30000
 ENV KRAKEN_GENERAL_zmq_socket=tcp://*:30000
 ENV KRAKEN_GENERAL_log_level=INFO
 HEALTHCHECK CMD nc -z localhost 30000 || exit 1
 
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["./kraken"]

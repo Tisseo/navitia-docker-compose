@@ -30,6 +30,8 @@ RUN apt-get update --fix-missing \
 COPY tyr_settings.py /srv/navitia/settings.py
 
 COPY run_tyr_beat.sh /
-RUN chmod +x /run_tyr_beat.sh
+COPY entrypoint_tyr.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /run_tyr_beat.sh /usr/local/bin/docker-entrypoint.sh
 
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["sh", "/run_tyr_beat.sh"]

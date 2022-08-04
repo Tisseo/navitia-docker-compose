@@ -61,8 +61,12 @@ RUN apt-get install -y curl && curl --silent --show-error --retry 5 https://boot
 EXPOSE 5000
 
 COPY tyr_settings.py /
+COPY entrypoint_tyr.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # TODO change the user to remove this ugly C_FORCE_ROOT
 ENV TYR_CONFIG_FILE=/tyr_settings.py
 ENV C_FORCE_ROOT=1
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["celery", "worker", "-A", "tyr.tasks", "-O", "fair"]

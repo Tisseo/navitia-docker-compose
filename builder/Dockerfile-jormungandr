@@ -26,10 +26,14 @@ RUN apt-get update --fix-missing \
 # I don't see a better way, geos try to find libc and fail, so ugly hack to give it
 RUN ln -s /lib/ld-musl-x86_64.so.1 /usr/lib/libc.so
 
+COPY entrypoint_jormungandr.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 WORKDIR /usr/src/app/
 
 HEALTHCHECK CMD curl -f http://localhost/v1 || exit 1
 ENV PYTHONPATH=.
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=cpp
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION_VERSION=2
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["uwsgi", "--master", "--lazy-apps", "--mount", "/=jormungandr:app", "--http", "0.0.0.0:80"]
